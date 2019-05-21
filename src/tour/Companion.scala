@@ -1,8 +1,14 @@
 package tour
 
+import java.util.UUID
+
 object Companion {
 
-  class Email(val username: String, val domainName: String)
+  class Email(val username: String, val domainName: String) {
+    import Email._
+
+    def myId: String = generator
+  }
 
   object Email {
     def fromString(emailString: String): Option[Email] = {
@@ -11,15 +17,19 @@ object Companion {
         case _ => None
       }
     }
+
+    private def generator: String = UUID.randomUUID().toString
   }
 
   def main(args: Array[String]): Unit = {
 
-    val x = Email.fromString("scala.center@epfl.ch")
+    val x: Option[Email] = Email.fromString("scala.center@epfl.ch")
     println(x.nonEmpty)
+    println(x.get.myId)
 
-    val y = Email.fromString("not a valid email")
+    val y: Option[Email] = Email.fromString("not a valid email")
     println(y.nonEmpty)
 
   }
+  
 }
